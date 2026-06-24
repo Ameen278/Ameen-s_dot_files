@@ -1,0 +1,57 @@
+/* --- Backgrounds --- */
+/* Deepest void for the underlying canvas */
+@define-color bg_dim #05050a;
+/* Standard application/terminal background */
+@define-color bg0 #0a0a12;
+/* Elevation steps (cards, sidebars, active rows) */
+@define-color bg1 #121224;
+@define-color bg2 #16162d;
+@define-color bg3 #1c1c3a;
+@define-color bg4 #25254c;
+@define-color bg5 #303066;
+
+/* --- Diff & Status Lines --- */
+/* Subdued neon-red tint for deletions */
+@define-color bg_diff_red #2a0012;
+/* Subdued neon-green tint for additions */
+@define-color bg_diff_green #0a2405;
+/* Subdued neon-blue tint for modifications */
+@define-color bg_diff_blue #002433;
+/* Status line backgrounds stepping up from bg1/bg2 */
+@define-color bg_statusline1 #121224;
+@define-color bg_statusline2 #16162d;
+@define-color bg_statusline3 #25254c;
+/* Highlighting the word under the cursor */
+@define-color bg_current_word #25254c;
+
+/* --- Visual Selection Backgrounds (Translucent Neon Tints) --- */
+@define-color bg_visual_red #40001a;
+@define-color bg_visual_green #0e4005;
+@define-color bg_visual_blue #003c44;
+@define-color bg_visual_yellow #3f3c02;
+@define-color bg_visual_purple #2b0047;
+
+/* --- Foreground / Text --- */
+/* Main high-contrast crisp text */
+@define-color fg0 #ffffff;
+/* Slightly softer text for subheaders */
+@define-color fg1 #e2e2ec;
+
+/* --- Accent Colors (Foreground) --- */
+@define-color red #ff0055;
+@define-color green #39ff14;
+@define-color blue #00f0ff;
+@define-color yellow #fcee0a;
+@define-color purple #9d00ff;
+@define-color orange #ff6c00;
+@define-color aqua #00ffee;
+
+/* --- Accent Colors (Background) & Greys --- */
+/* Pure neon blocks for solid UI alerts/badges */
+@define-color bg_red #ff0055;
+@define-color bg_green #39ff14;
+@define-color bg_yellow #fcee0a;
+/* Muted tech greys for comments, borders, and inactive elements */
+@define-color grey0 #525270;
+@define-color grey1 #707090;
+@define-color grey2 #8b8b9f;
