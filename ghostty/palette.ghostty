@@ -1,0 +1,23 @@
+# Generated from the wallpaper by ~/.config/hypr/palette.sh - DO NOT EDIT
+palette = 0=#141212
+palette = 1=#c76d50
+palette = 2=#95ae64
+palette = 3=#b2cb5f
+palette = 4=#5ac8f5
+palette = 5=#9b57ad
+palette = 6=#6af5f4
+palette = 7=#cfd9d9
+palette = 8=#bdafaf
+palette = 9=#d79681
+palette = 10=#b3c58f
+palette = 11=#c3d682
+palette = 12=#88d7f8
+palette = 13=#b481c2
+palette = 14=#8ff8f7
+palette = 15=#e2eded
+background = #1f1c1c
+foreground = #e2eded
+cursor-color = #5ac8f5
+cursor-text = #1f1c1c
+selection-background = #2e4752
+selection-foreground = #e2eded

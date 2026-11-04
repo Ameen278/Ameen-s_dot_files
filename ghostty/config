@@ -1,0 +1,3 @@
+gtk-single-instance = false
+config-file = /home/ameen/.config/ghostty/palette.ghostty
+keybind = ctrl+shift+comma=reload_config
