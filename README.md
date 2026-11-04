@@ -13,6 +13,8 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
   - `waybar/color/color.css`
   - a marked color block inside `hypr/hyprlock.conf`
   - `ghostty/palette.ghostty` (consumed by the shipped `ghostty/config`)
+  - Hyprland window border gradients (live via `hyprctl keyword`, persisted as a
+    marker block in `hypr/modules/decorations.lua`)
 - **Wallpaper shuffle** — `hypr/wallpaper.sh` picks a random wallpaper from
   `~/Pictures/wallpapers` (`png/jpg/jpeg/webp`), never repeats the last one, and
   triggers the palette pipeline afterwards.
