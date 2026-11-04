@@ -1,0 +1,129 @@
+/**
+ * Ameen Modern — dark + blue accent launcher
+ * Slightly transparent, rounded, centered window
+ */
+
+* {
+    bg:          rgba ( 16, 20, 30, 92 % );
+    bg-field:    rgba ( 255, 255, 255, 7 % );
+    fg:          rgba ( 233, 238, 246, 100 % );
+    fg-dim:      rgba ( 148, 158, 175, 100 % );
+    accent:      rgba ( 84, 146, 255, 100 % );
+    accent-soft: rgba ( 84, 146, 255, 18 % );
+    urgent:      rgba ( 235, 95, 105, 100 % );
+    selected-fg: rgba ( 12, 16, 26, 100 % );
+
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+window {
+    width:            40%;
+    location:         center;
+    background-color: @bg;
+    border:           2px;
+    border-color:     @accent;
+    border-radius:    12px;
+}
+
+mainbox {
+    padding:  14px;
+    spacing:  12px;
+    children: [ "inputbar", "listview", "message" ];
+}
+
+inputbar {
+    spacing:          8px;
+    padding:          12px 14px;
+    background-color: @bg-field;
+    border-radius:    10px;
+    children:         [ "prompt", "entry" ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder:       "Search…";
+    placeholder-color: @fg-dim;
+    cursor:            text;
+}
+
+listview {
+    spacing:      4px;
+    lines:        8;
+    fixed-height: false;
+    scrollbar:    false;
+    padding:      4px 0px 0px;
+}
+
+element {
+    spacing:       12px;
+    padding:       8px 12px;
+    border-radius: 10px;
+    cursor:        pointer;
+}
+
+element-icon {
+    size:             1.5em;
+    background-color: transparent;
+}
+
+element-text {
+    vertical-align:   0.5;
+    background-color: transparent;
+    text-color:       inherit;
+}
+
+element normal.urgent { text-color: @urgent; }
+element normal.active { text-color: @accent; }
+
+element alternate.urgent { text-color: @urgent; }
+element alternate.active { text-color: @accent; }
+
+element selected.normal {
+    background-color: @accent;
+    text-color:       @selected-fg;
+}
+
+element selected.urgent {
+    background-color: @urgent;
+    text-color:       @selected-fg;
+}
+
+element selected.active {
+    background-color: @accent;
+    text-color:       @selected-fg;
+}
+
+scrollbar {
+    width:            4px;
+    padding:          0;
+    border:           0;
+    handle-width:     8px;
+    handle-color:     @accent;
+    background-color: transparent;
+}
+
+message {
+    padding:          10px 14px;
+    background-color: @bg-field;
+    border-radius:    10px;
+    text-color:       @fg-dim;
+    border:           0px 0px 0px 3px;
+    border-color:     @accent;
+}
+
+button {
+    padding:          8px 16px;
+    border-radius:    10px;
+    cursor:           pointer;
+    background-color: transparent;
+    text-color:       @fg-dim;
+}
+
+button selected.normal {
+    background-color: @accent;
+    text-color:       @selected-fg;
+}

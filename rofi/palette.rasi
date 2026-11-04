@@ -1,0 +1,13 @@
+/* Generated from the wallpaper by ~/.config/hypr/palette.sh — DO NOT EDIT */
+/* Imported after theme.rasi in config.rasi, so these variables win */
+
+* {
+    bg:          rgba ( 31, 28, 28, 92% );
+    bg-field:    rgba ( 235, 237, 237, 7% );
+    fg:          #ebeded;
+    fg-dim:      #b8a9a9;
+    accent:      #338ddc;
+    accent-soft: rgba ( 51, 141, 220, 18% );
+    urgent:      #c75b50;
+    selected-fg: #1a1212;
+}

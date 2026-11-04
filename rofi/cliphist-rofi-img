@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# rofi custom-mode backend for cliphist: clipboard history with thumbnails.
+# Arguments:
+#   none  -> print rows; image entries get "\0icon\x1f"path" thumbnails
+#   row   -> rofi passes the picked row back: re-copy it (images keep mime via xdg-utils)
+# Rows "0 -Delete-" / "0 -Clear-" are action sentinels handled here.
+# Pairs with the store daemons:
+#   wl-paste --type text  --watch cliphist store
+#   wl-paste --type image --watch cliphist store
+
+set -u
+tmp_dir="/tmp/cliphist"
+
+if [[ -n "${1:-}" ]]; then
+    row="$1"
+    id="${row%%[$'\t']*}"
+    if [[ "$id" == "0" && "$row" == *'-Delete-'* ]]; then
+        (sleep 0.3; cliphist list | rofi -dmenu -i -p 'Delete entry' | cliphist delete) >/dev/null 2>&1 &
+        exit 0
+    elif [[ "$id" == "0" && "$row" == *'-Clear-'* ]]; then
+        cliphist clear
+        exit 0
+    fi
+    printf '%s\n' "$row" | cliphist decode | wl-copy
+    exit 0
+fi
+
+rm -rf "$tmp_dir"
+mkdir -p "$tmp_dir"
+
+while IFS=$'\t' read -r id preview; do
+    [[ -z "${id:-}" ]] && continue
+
+    # skip text/html blobs browsers attach when copying images
+    [[ "$preview" == '<meta http-equiv='* ]] && continue
+
+    if [[ "$preview" == "[["* ]]; then
+        # "[[ binary data 512.5 KiB image/png 800x600 ]]"
+        mime='image/png'
+        read -r _ _ _ _ _ mime _ <<<"$preview"
+        case "$mime" in
+            image/*)                   ext="${mime#image/}" ;;
+            png|jpeg|jpg|gif|webp|bmp) ext="$mime" ;;
+            *)                         ext='png' ;;
+        esac
+        if cliphist decode <<<"$id"$'\t'"$preview" > "$tmp_dir/$id.$ext" 2>/dev/null; then
+            printf '%s\t%s\0icon\x1f%s/%s.%s\n' "$id" "$preview" "$tmp_dir" "$id" "$ext"
+        else
+            printf '%s\t%s\n' "$id" "$preview"
+        fi
+    else
+        printf '%s\t%s\n' "$id" "$preview"
+    fi
+done < <(cliphist list)
+
+# action rows still routable (never collide: real entry ids are >= 1)
+printf '0\t-Delete-\n'
+printf '0\t-Clear-\n'

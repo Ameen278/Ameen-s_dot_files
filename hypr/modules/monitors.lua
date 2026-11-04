@@ -9,3 +9,11 @@ hl.monitor({
     position = "0x0",          -- "auto" is fine for a single monitor
     scale    = "1",            -- "1" is 100% scale (standard)
 })
+
+hl.monitor({
+    output   = "",             -- سيبها فاضية عشان تطبق على أي شاشة تتنوصل جديدة
+    mode     = "preferred",
+    position = "auto",
+    scale    = "auto", -- كانت محطوطة 1
+    mirror   = "eDP-1",        -- بيخلي الشاشة الجديدة تعمل Mirror للشاشة الأساسية
+})

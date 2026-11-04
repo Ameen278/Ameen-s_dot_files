@@ -4,9 +4,13 @@
 
 -- Set programs that you use
 local terminal    = "ghostty"
-local fileManager = "ghostty -e yazi"
+local fileManager = "dolphin"
 local menu        = "pkill rofi || rofi -show drun"
-
+local textEditor  = "code"
+local screenShoot = "flameshot gui --raw | wl-copy"--"hyprshot -m window"
+local clipBoard   = "~/.config/rofi/clipboard.sh"
+local emojiPicker = "~/.config/rofi/emoji.sh"
+local wallShuffle = "~/.config/hypr/wallpaper.sh"
 
 
 ---------------------
@@ -17,6 +21,9 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(textEditor))
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock"))
+
 local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
 hl.bind(mainMod .. " + M",
@@ -26,6 +33,14 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(screenShoot))
+
+-- Clipboard history and emoji pickers (rofi)
+hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd(clipBoard))
+hl.bind(mainMod .. " + period", hl.dsp.exec_cmd(emojiPicker))
+
+-- Next random wallpaper (awww)
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(wallShuffle))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))

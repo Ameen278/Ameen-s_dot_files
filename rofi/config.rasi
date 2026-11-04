@@ -1,0 +1,19 @@
+/**
+ * rofi configuration — modern launcher
+ * styling lives in theme.rasi
+ */
+
+configuration {
+    modes:               "drun,run,window";
+    show-icons:          true;
+    icon-theme:          "breeze";
+    font:                "Adwaita Sans 11";
+    matching:            "fuzzy";
+    drun-display-format: "{name}";
+    display-drun:        "Applications";
+    display-run:         "Run";
+    display-window:      "Windows";
+}
+
+@theme "/home/ameen/.config/rofi/theme.rasi"
+@import "/home/ameen/.config/rofi/palette.rasi"
