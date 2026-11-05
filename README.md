@@ -18,8 +18,12 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
   - Hyprland window border gradients (live via `hyprctl keyword`, persisted as a
     marker block in `hypr/modules/decorations.lua`)
   - your Obsidian vault (see [Obsidian theming](#obsidian-theming))
-  - the shared **KDE color palette** (`~/.config/kdeglobals` `[Colors:*]` groups) —
-    re-tints Dolphin and every other KDE/Qt app on their next launch
+  - the shared **KDE color palette** — generates a full color scheme
+    (`~/.local/share/color-schemes/AmeenPalette.colors`) from the wallpaper and
+    selects it in `kdeglobals`, re-tinting Dolphin and every other KDE/Qt app on
+    their next launch. Requires the KDE platform theme: `env.lua` exports
+    `QT_QPA_PLATFORMTHEME=kde` (overrides the common `=gtk4` default, which makes
+    Qt build its palette from GTK settings and ignore the scheme entirely)
 - **Wallpaper shuffle** — `hypr/wallpaper.sh` picks a random wallpaper from
   `~/Pictures/wallpapers` (`png/jpg/jpeg/webp`), never repeats the last one, and
   triggers the palette pipeline afterwards.

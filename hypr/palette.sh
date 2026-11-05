@@ -157,6 +157,10 @@ END {
     print "text_b=" hextrip(fg0) " sub1_b=" hextrip(grey2) " sub0_b=" hextrip(grey1) " ov0_b=" hextrip(grey0)
     print "surf0_b=" hextrip(bg2) " surf1_b=" hextrip(bg3) " surf2_b=" hextrip(bg4)
     print "green_b=" hextrip(green) " red_b=" hextrip(red) " yellow_b=" hextrip(yellow) " teal_b=" hextrip(aqua)
+    print "kbg0=" hextrip(bg0) " kbg1=" hextrip(bg1) " kbg2=" hextrip(bg2) " kbg3=" hextrip(bg3)
+    print "kfg0=" hextrip(fg0) " kg1=" hextrip(grey1) " kg2=" hextrip(grey2)
+    print "kacc=" hextrip(accent) " kacc2=" hextrip(accent2)
+    print "kgrn=" hextrip(green) " kred=" hextrip(red) " kylw=" hextrip(yellow) " kaq=" hextrip(aqua)
     print "r_bg=\"" rgbafr(bg0, 92) "\""
     print "r_bgfield=\"" rgbafr(fg0, 7) "\""
     print "r_accent_soft=\"" rgbafr(accent, 18) "\""
@@ -372,6 +376,79 @@ cat > "$OBSIDIAN_SNIP" <<EOF
     --ctp-accent: $acc_b;
 }
 EOF
+
+# ---------------------------------------------------------------- kdeglobals
+KDG="$HOME/.config/kdeglobals"
+if [ -f "$KDG" ]; then
+    KMAP="$HOME/.cache/kdeg-colormap"
+    {
+        for K in "Window|BackgroundNormal|$kbg0" "Window|BackgroundAlternate|$kbg1" \
+                 "View|BackgroundNormal|$kbg1" "View|BackgroundAlternate|$kbg2" \
+                 "Selection|BackgroundNormal|$kacc" "Selection|BackgroundAlternate|$kacc" \
+                 "Button|BackgroundNormal|$kbg1" "Button|BackgroundAlternate|$kbg2" \
+                 "Tooltip|BackgroundNormal|$kbg1" "Tooltip|BackgroundAlternate|$kbg2" \
+                 "Complementary|BackgroundNormal|$kbg2" "Complementary|BackgroundAlternate|$kbg3"; do
+            printf '%s\n' "Colors:${K}"
+        done
+        for K in Window View Button Tooltip; do
+            printf 'Colors:%s|ForegroundNormal|%s\n' "$K" "$kfg0"
+            printf 'Colors:%s|ForegroundActive|%s\n' "$K" "$kaq"
+            printf 'Colors:%s|ForegroundInactive|%s\n' "$K" "$kg1"
+            printf 'Colors:%s|ForegroundLink|%s\n' "$K" "$kacc"
+            printf 'Colors:%s|ForegroundVisited|%s\n' "$K" "$kacc2"
+            printf 'Colors:%s|ForegroundPositive|%s\n' "$K" "$kgrn"
+            printf 'Colors:%s|ForegroundNegative|%s\n' "$K" "$kred"
+            printf 'Colors:%s|ForegroundNeutral|%s\n' "$K" "$kylw"
+            printf 'Colors:%s|DecorationFocus|%s\n' "$K" "$kacc"
+            printf 'Colors:%s|DecorationHover|%s\n' "$K" "$kaq"
+        done
+        printf 'Colors:Selection|ForegroundNormal|%s\n' "$kfg0"
+        printf 'Colors:Selection|ForegroundInactive|%s\n' "$kg2"
+        printf 'Colors:Complementary|ForegroundNormal|%s\n' "$kfg0"
+        printf 'Colors:Complementary|ForegroundInactive|%s\n' "$kg1"
+    } > "$KMAP"
+    awk -v M="$KMAP" '
+        BEGIN { while ((getline l < M) > 0) { n = split(l, a, "|"); F[a[1], a[2]] = a[3] } }
+        /^[\[]/ { g = substr($0, 2, length($0) - 2) }
+        /=/ {
+            i = index($0, "=")
+            k = substr($0, 1, i - 1)
+            if ((g SUBSEP k) in F) { sub(/=.*/, "=" F[g, k]) }
+        }
+        { print }
+    ' "$KDG" > "${KDG}.tmp" && mv "${KDG}.tmp" "$KDG"
+
+    CUR=$(awk '/^\[General\]/{f=1} f && /^ColorScheme=/{sub(/^ColorScheme=/, ""); print; exit}' "$KDG")
+    if [ "$CUR" = "AmeenPalette" ]; then
+        SRC=$(cat "$HOME/.cache/kdeg-base-scheme" 2>/dev/null)
+    else
+        SRC="$CUR"
+        printf '%s\n' "$CUR" > "$HOME/.cache/kdeg-base-scheme"
+    fi
+    [ -z "$SRC" ] && SRC="ArtixDark"
+    SCHEME_DIR="$HOME/.local/share/color-schemes"
+    mkdir -p "$SCHEME_DIR"
+    BASE_SCHEME=""
+    for CAND in "$HOME/.local/share/color-schemes/${SRC}.colors" "/usr/share/color-schemes/${SRC}.colors"; do
+        [ -f "$CAND" ] && BASE_SCHEME="$CAND" && break
+    done
+    if [ -n "$BASE_SCHEME" ]; then
+        awk -v M="$HOME/.cache/kdeg-colormap" '
+            BEGIN { while ((getline l < M) > 0) { n = split(l, a, "|"); F[a[1], a[2]] = a[3] } }
+            /^[\[]/ { g = substr($0, 2, length($0) - 2) }
+            /=/ {
+                i = index($0, "=")
+                k = substr($0, 1, i - 1)
+                if ((g SUBSEP k) in F) { sub(/=.*/, "=" F[g, k]) }
+            }
+            /^Name=/   { $0 = "Name=Ameen Palette" }
+            /^ColorScheme=/     { $0 = "ColorScheme=AmeenPalette" }
+            /^ColorSchemeHash=/ { next }
+            { print }
+        ' "$BASE_SCHEME" > "${SCHEME_DIR}/AmeenPalette.colors"
+        sed -i 's/^ColorScheme=.*/ColorScheme=AmeenPalette/' "$KDG"
+    fi
+fi
 
 # ---------------------------------------------------------------- apply
 if pgrep -x waybar >/dev/null 2>&1; then
