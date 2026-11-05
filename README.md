@@ -15,6 +15,11 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
   - `ghostty/palette.ghostty` (consumed by the shipped `ghostty/config`)
   - Hyprland window border gradients (live via `hyprctl keyword`, persisted as a
     marker block in `hypr/modules/decorations.lua`)
+  - an **Obsidian snippet** (`obsidian/palette.css`, written into the vault's
+    `.obsidian/snippets/`) — a universal standard-variable tier that re-tints
+    **any** theme on its `--accent-h/s/l` + surface contract, plus AnuPpuccin's
+    own `--ctp-custom-*` tier for precision; enable the snippet in Settings
+    → Appearance → CSS snippets
 - **Wallpaper shuffle** — `hypr/wallpaper.sh` picks a random wallpaper from
   `~/Pictures/wallpapers` (`png/jpg/jpeg/webp`), never repeats the last one, and
   triggers the palette pipeline afterwards.

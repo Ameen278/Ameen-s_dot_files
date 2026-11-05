@@ -56,6 +56,9 @@ function hsv2hex(h, s, v,   i, f, p, q, t, r, g, b) {
 function rgbafr(hex, pct) {  # rofi style:  rgba ( r, g, b, pct% )
     return sprintf("rgba ( %d, %d, %d, %d%% )", hexch(hex, 1), hexch(hex, 2), hexch(hex, 3), pct)
 }
+function hextrip(hex) {      # AnuPpuccin rgb-triplet source
+    return sprintf("%d,%d,%d", hexch(hex, 1), hexch(hex, 2), hexch(hex, 3))
+}
 {
     cnt[i] = $1; hex[i] = $5; sub(/^#/, "", hex[i])
     r = $2 / 255; g = $3 / 255; b = $4 / 255
@@ -146,6 +149,14 @@ END {
     print "grey0=" grey0 " grey1=" grey1 " grey2=" grey2
     print "vs_r=" vs_r " vs_g=" vs_g " vs_b=" vs_b " vs_y=" vs_y " vs_p=" vs_p
     print "gsel=" gsel
+    print "acc_b=" hextrip(accent) " acc2_b=" hextrip(accent2)
+    l_hsl = av * (1 - as / 2)
+    s_hsl = (as == 0 || l_hsl <= 0 || l_hsl >= 1) ? 0 : (av - l_hsl) / (l_hsl < 0.5 ? l_hsl : 1 - l_hsl)
+    print "acc_h=" int(hue(ah) + 0.5) " acc_s=" int(s_hsl * 100 + 0.5) " acc_l=" int(l_hsl * 100 + 0.5)
+    print "base_b=" hextrip(bg1) " mantle_b=" hextrip(bg0) " crust_b=" hextrip(bg_dim)
+    print "text_b=" hextrip(fg0) " sub1_b=" hextrip(grey2) " sub0_b=" hextrip(grey1) " ov0_b=" hextrip(grey0)
+    print "surf0_b=" hextrip(bg2) " surf1_b=" hextrip(bg3) " surf2_b=" hextrip(bg4)
+    print "green_b=" hextrip(green) " red_b=" hextrip(red) " yellow_b=" hextrip(yellow) " teal_b=" hextrip(aqua)
     print "r_bg=\"" rgbafr(bg0, 92) "\""
     print "r_bgfield=\"" rgbafr(fg0, 7) "\""
     print "r_accent_soft=\"" rgbafr(accent, 18) "\""
@@ -300,6 +311,67 @@ command -v hyprctl >/dev/null 2>&1 && pgrep -x Hyprland >/dev/null 2>&1 && {
     hyprctl keyword general:col.active_border "rgba(${accent}ee) rgba(${accent2}ee) 45deg" >/dev/null 2>&1
     hyprctl keyword general:col.inactive_border "rgba(${bg4}aa)" >/dev/null 2>&1
 }
+
+# ---------------------------------------------------------------- obsidian
+OBSIDIAN_SNIP="$HOME/Ameen's_Notes/.obsidian/snippets/palette.css"
+mkdir -p "${OBSIDIAN_SNIP%/*}"
+cat > "$OBSIDIAN_SNIP" <<EOF
+/* Generated from the wallpaper by ~/.config/hypr/palette.sh — DO NOT EDIT */
+
+/* Tier 0 — universal contract (standard Obsidian variables, any theme) */
+.theme-dark {
+    --background-primary:               #$bg1;
+    --background-primary-alt:           #$bg2;
+    --background-secondary:             #$bg0;
+    --background-secondary-alt:         #$bg_dim;
+    --titlebar-background:              #$bg0;
+    --titlebar-background-focused:      #$bg1;
+    --text-normal:                      #$fg0;
+    --text-muted:                       #$grey1;
+    --text-faint:                       #$grey0;
+    --accent-h:                         $acc_h;
+    --accent-s:                         $acc_s%;
+    --accent-l:                         $acc_l%;
+    --interactive-accent:               #$accent;
+    --interactive-accent-hover:         #$t12;
+    --text-accent:                      #$accent;
+    --text-accent-hover:                #$t12;
+    --text-on-accent:                   #$bg0;
+    --text-selection:                   #${gsel};
+    --background-modifier-border:       #$bg3;
+    --background-modifier-border-hover: #$bg4;
+    --background-modifier-border-focus: #$bg4;
+    --scrollbar-bg:                     #$bg1;
+    --scrollbar-thumb-bg:               #$bg3;
+}
+
+/* Tier 1 — Surfaces + syntax via AnuPpuccin's official custom tier (weakest — always consulted) */
+.theme-dark, .theme-light {
+    --ctp-custom-base:     $base_b;
+    --ctp-custom-mantle:   $mantle_b;
+    --ctp-custom-crust:    $crust_b;
+    --ctp-custom-text:     $text_b;
+    --ctp-custom-subtext1: $sub1_b;
+    --ctp-custom-subtext0: $sub0_b;
+    --ctp-custom-overlay0: $ov0_b;
+    --ctp-custom-surface0: $surf0_b;
+    --ctp-custom-surface1: $surf1_b;
+    --ctp-custom-surface2: $surf2_b;
+    --ctp-custom-red:      $red_b;
+    --ctp-custom-yellow:   $yellow_b;
+    --ctp-custom-green:    $green_b;
+    --ctp-custom-teal:     $teal_b;
+    --ctp-custom-sapphire: $acc_b;
+    --ctp-custom-mauve:    $acc2_b;
+}
+
+/* Accent: same specificity + snippet loads after theme = wins every flavor pick */
+.theme-dark, .theme-dark.ctp-frappe, .theme-dark.ctp-macchiato, .theme-dark.ctp-mocha,
+.theme-light, .theme-light.ctp-latte, .theme-light.ctp-frappe,
+.theme-light.ctp-macchiato, .theme-light.ctp-mocha {
+    --ctp-accent: $acc_b;
+}
+EOF
 
 # ---------------------------------------------------------------- apply
 if pgrep -x waybar >/dev/null 2>&1; then

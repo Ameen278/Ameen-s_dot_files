@@ -1,0 +1,55 @@
+/* Generated from the wallpaper by ~/.config/hypr/palette.sh — DO NOT EDIT */
+
+/* Tier 0 — universal contract (standard Obsidian variables, any theme) */
+.theme-dark {
+    --background-primary:               #291b17;
+    --background-primary-alt:           #36231f;
+    --background-secondary:             #1f1412;
+    --background-secondary-alt:         #140d0c;
+    --titlebar-background:              #1f1412;
+    --titlebar-background-focused:      #291b17;
+    --text-normal:                      #edcec2;
+    --text-muted:                       #99908e;
+    --text-faint:                       #736c6b;
+    --accent-h:                         9;
+    --accent-s:                         38%;
+    --accent-l:                         47%;
+    --interactive-accent:               #a6594b;
+    --interactive-accent-hover:         #bf877d;
+    --text-accent:                      #a6594b;
+    --text-accent-hover:                #bf877d;
+    --text-on-accent:                   #1f1412;
+    --text-selection:                   #412520;
+    --background-modifier-border:       #452d28;
+    --background-modifier-border-hover: #573932;
+    --background-modifier-border-focus: #573932;
+    --scrollbar-bg:                     #291b17;
+    --scrollbar-thumb-bg:               #452d28;
+}
+
+/* Tier 1 — Surfaces + syntax via AnuPpuccin's official custom tier (weakest — always consulted) */
+.theme-dark, .theme-light {
+    --ctp-custom-base:     41,27,23;
+    --ctp-custom-mantle:   31,20,18;
+    --ctp-custom-crust:    20,13,12;
+    --ctp-custom-text:     237,206,194;
+    --ctp-custom-subtext1: 189,178,175;
+    --ctp-custom-subtext0: 153,144,142;
+    --ctp-custom-overlay0: 115,108,107;
+    --ctp-custom-surface0: 54,35,31;
+    --ctp-custom-surface1: 69,45,40;
+    --ctp-custom-surface2: 87,57,50;
+    --ctp-custom-red:      199,93,80;
+    --ctp-custom-yellow:   220,149,108;
+    --ctp-custom-green:    87,158,105;
+    --ctp-custom-teal:     166,84,96;
+    --ctp-custom-sapphire: 166,89,75;
+    --ctp-custom-mauve:    83,141,130;
+}
+
+/* Accent: same specificity + snippet loads after theme = wins every flavor pick */
+.theme-dark, .theme-dark.ctp-frappe, .theme-dark.ctp-macchiato, .theme-dark.ctp-mocha,
+.theme-light, .theme-light.ctp-latte, .theme-light.ctp-frappe,
+.theme-light.ctp-macchiato, .theme-light.ctp-mocha {
+    --ctp-accent: 166,89,75;
+}
