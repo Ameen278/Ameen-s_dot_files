@@ -15,11 +15,7 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
   - `ghostty/palette.ghostty` (consumed by the shipped `ghostty/config`)
   - Hyprland window border gradients (live via `hyprctl keyword`, persisted as a
     marker block in `hypr/modules/decorations.lua`)
-  - an **Obsidian snippet** (`obsidian/palette.css`, written into the vault's
-    `.obsidian/snippets/`) — a universal standard-variable tier that re-tints
-    **any** theme on its `--accent-h/s/l` + surface contract, plus AnuPpuccin's
-    own `--ctp-custom-*` tier for precision; enable the snippet in Settings
-    → Appearance → CSS snippets
+  - your Obsidian vault (see [Obsidian theming](#obsidian-theming))
 - **Wallpaper shuffle** — `hypr/wallpaper.sh` picks a random wallpaper from
   `~/Pictures/wallpapers` (`png/jpg/jpeg/webp`), never repeats the last one, and
   triggers the palette pipeline afterwards.
@@ -85,6 +81,31 @@ chmod +x ~/.config/rofi/{clipboard.sh,emoji.sh,cliphist-rofi-img}
 Hyprland picks up `hyprland.lua` on its own; the autostart module launches waybar,
 the cliphist watchers (`text` + `image`), and the wallpaper daemon guard for you.
 
+## Obsidian theming
+
+`palette.sh` writes an enabling CSS snippet into your vault and (with it enabled once)
+re-tints Obsidian on every shuffle:
+
+1. The script's output path is fixed to `$HOME/Ameen's_Notes/.obsidian/snippets/palette.css`
+   — edit the `OBSIDIAN_SNIP` variable if your vault is elsewhere (a sample of the
+   generated file ships in `obsidian/palette.css`)
+2. In Obsidian: Settings → Appearance → CSS snippets → refresh → enable `palette` (once)
+3. Every `SUPER + W` silently regenerates the snippet; Obsidian picks the file change up live
+
+The generated snippet has two tiers:
+
+- **Universal tier** — standard Obsidian variables (`--background-primary/-secondary`,
+  `--text-normal`, `--interactive-accent`, `--accent-h/s/l`, borders, scrollbar).
+  Works with **any** theme that follows the shared variable contract (verified against
+  Everforest, Tokyo Night, Cyber Glow, default).
+- **AnuPpuccin tier** — feeds the theme's own `--ctp-custom-*` variables (its designed
+  override chain) and overrides `--ctp-accent` per flavor class, so the Catppuccin-based
+  theme follows the wallpaper exactly, down to syntax colors.
+
+Defaults target dark mode: `.theme-dark` gets full surfaces, light mode keeps its surfaces
+and receives the accent. Exotic themes with higher-specificity self-mappings may keep a few
+keys — backgrounds, text and accent follow regardless.
+
 ## Structure
 
 ```
@@ -95,6 +116,8 @@ the cliphist watchers (`text` + `image`), and the wallpaper daemon guard for you
 │   ├── modules/     # binds, autostart, decorations, env, input, ...
 │   ├── palette.sh   # wallpaper → color palette
 │   └── wallpaper.sh # random shuffle + palette trigger
+├── obsidian/
+│   └── palette.css  # generated vault snippet sample (universal + AnuPpuccin tiers)
 ├── rofi/
 │   ├── config.rasi / theme.rasi        # rofi theme (imported by config.rasi)
 │   ├── palette.rasi                    # generated from wallpaper
