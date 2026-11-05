@@ -18,6 +18,8 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
   - Hyprland window border gradients (live via `hyprctl keyword`, persisted as a
     marker block in `hypr/modules/decorations.lua`)
   - your Obsidian vault (see [Obsidian theming](#obsidian-theming))
+  - the shared **KDE color palette** (`~/.config/kdeglobals` `[Colors:*]` groups) —
+    re-tints Dolphin and every other KDE/Qt app on their next launch
 - **Wallpaper shuffle** — `hypr/wallpaper.sh` picks a random wallpaper from
   `~/Pictures/wallpapers` (`png/jpg/jpeg/webp`), never repeats the last one, and
   triggers the palette pipeline afterwards.
@@ -130,14 +132,44 @@ config-file = /home/ameen/.config/ghostty/palette.ghostty
 a config reload (`CTRL + SHIFT + ,`) to apply.
 
 **Amfora** (`amfora/config.toml`, tested against `amfora 1.11.0`) is the actual full
-config: home `gemini://geminiprotocol.net` and search `gemini://geminispace.info/search`,
-HTTP(S) links open in the system default browser, an absolute-path download dir pointing
-at `/home/ameen/Downloads`, and explicit page-search keybindings: `/` opens the search
-bar and `n`/`N` jump between matches. Code-block highlighting uses `monokai` on purpose —
+config: home/start page `gemini://kennedy.gemi.dev/` (Kennedy — the Gemini meta search
+engine) and search `gemini://geminispace.info/search`, HTTP(S) links open in the system
+default browser, an absolute-path download dir pointing at `/home/ameen/Downloads`,
+and an explicit `[keybindings]` navigation section (matches upstream defaults, so it
+is visible and tweakable instead of hidden):
+
+| Keys | Action |
+|------|--------|
+| `h/j/k/l` + arrows | scroll / move the page |
+| `g` / `G` (or `Home`/`End`) | top / bottom of page |
+| `u` / `d` (or `PgUp`/`PgDn`) | page up / page down |
+| `b` / `f` (or `Alt+←`/`Alt+→`) | back / forward in history |
+| `Ctrl+T` / `Ctrl+W` | new tab / close tab |
+| `F1` / `F2` | previous / next tab |
+| `Space` / `e` | open URL bar / edit current URL |
+| `/` then `n` / `N` | page search, jump between matches |
+
+Backspace (or `Ctrl-H`) always jumps to the Kennedy home page. Note that amfora 1.11
+itself always opens its `about:newtab` page on a bare launch regardless of `home` —
+the zsh function in the README notes below makes a bare `amfora` open straight into
+`home` instead. Code-block highlighting uses `monokai` on purpose —
 this release's bundled chroma predates the `catppuccin-*` styles (an invalid style falls
 back to bland defaults rather than erroring, so it has to be chosen deliberately).
 Everything else stays at upstream defaults; bookmarks, subscriptions and certificates
 live in `~/.local/share/amfora` and are not part of this repo.
+
+Shell wrapper (needs to live in `~/.zshrc`, not shipped as a dotfile) so that a bare
+`amfora` starts on the home page while explicit URLs still work:
+
+```zsh
+amfora() {
+  if [ $# -eq 0 ]; then
+    command amfora gemini://kennedy.gemi.dev/
+  else
+    command amfora "$@"
+  fi
+}
+```
 
 ## Structure
 

@@ -22,7 +22,7 @@
 
 [a-general]
 # Press Ctrl-H to access it
-home = "gemini://geminiprotocol.net"
+home = "gemini://kennedy.gemi.dev/"
 
 # Follow up to 5 Gemini redirects without prompting.
 # A prompt is always shown after the 5th redirect and for redirects to protocols other than Gemini.
@@ -232,6 +232,30 @@ underline = true
 # bind_beginning: moving to beginning of page (top left)
 # bind_end: same but the for the end (bottom left)
 # bind_url_handler_open: Open highlighted URL with URL handler (#143)
+
+# Navigation (vi-style) — matches amfora 1.11 defaults
+bind_home = "Backspace"
+bind_back = ["b", "Alt-Left"]
+bind_forward = ["f", "Alt-Right"]
+bind_moveup = "k"
+bind_movedown = "j"
+bind_moveleft = "h"
+bind_moveright = "l"
+bind_pgup = ["PgUp", "u"]
+bind_pgdn = ["PgDn", "d"]
+bind_beginning = ["Home", "g"]
+bind_end = ["End", "G"]
+
+# Tabs
+bind_new_tab = "Ctrl-T"
+bind_next_tab = "F2"
+bind_prev_tab = "F1"
+bind_close_tab = "Ctrl-W"
+
+# Pages
+bind_reload = ["R", "Ctrl-R"]
+bind_bottom = "Space"
+bind_edit = "e"
 
 # Search
 bind_search = "/"
