@@ -12,7 +12,9 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
   - `rofi/palette.rasi`
   - `waybar/color/color.css`
   - a marked color block inside `hypr/hyprlock.conf`
-  - `ghostty/palette.ghostty` (consumed by the shipped `ghostty/config`)
+  - `ghostty/palette.ghostty` (kept in sync but **not loaded** — the shipped
+    `ghostty/config` now pins a static Catppuccin Mocha theme; see
+    [Ghostty and Amfora](#ghostty-and-amfora))
   - Hyprland window border gradients (live via `hyprctl keyword`, persisted as a
     marker block in `hypr/modules/decorations.lua`)
   - your Obsidian vault (see [Obsidian theming](#obsidian-theming))
@@ -25,9 +27,10 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
 - **Waybar** — pill-status modules (workspaces, network, bluetooth, clock, battery,
   memory, **CPU** with warning/critical state colors, pulseaudio), palette-tinted.
 - **hyprlock** — styled lock screen that follows the wallpaper palette.
-- **Ghostty** — config stub that includes the generated palette, a `CTRL + SHIFT + ,`
-  reload keybind, and `gtk-single-instance = false` so every new terminal process
-  picks up the current wallpaper colors (single-instance hunts down stale configs).
+- **Ghostty** — Catppuccin Mocha theme with the JetBrainsMono Nerd Font primary
+  at size 12, 8px window padding, a `CTRL + SHIFT + ,` reload keybind, and
+  `gtk-single-instance = false` so every new terminal process picks up its
+  launch-time config.
 
 ## Keybinds (the ones this repo adds)
 
@@ -52,22 +55,23 @@ hyprland waybar rofi hyprlock cliphist wl-clipboard awww imagemagick gawk
 **Optional (click targets / extras):**
 
 ```
-ghostty btop pavucontrol bluetuith
+ghostty btop pavucontrol bluetuith amfora
 ```
 
 **Fonts:** any [Nerd Font] (e.g. `ttf-material-design-icons-git` style glyph coverage is used
-by waybar's memory/battery/cpu icons).
+by waybar's memory/battery/cpu icons; `ghostty/config` ships `JetBrainsMono Nerd Font` as
+its primary, via the terminal's fontconfig fallback for anything it lacks).
 
 ## Installation
 
-The scripts resolve hard-coded paths under `~/.config/`, so all four folders must be
+The scripts resolve hard-coded paths under `~/.config/`, so all five folders must be
 installed exactly there:
 
 ```sh
 git clone https://github.com/Ameen278/Ameen-s_dot_files.git
 cd Ameen-s_dot_files
 
-cp -r hypr rofi waybar ghostty ~/.config/
+cp -r hypr rofi waybar ghostty amfora ~/.config/
 chmod +x ~/.config/hypr/{palette,wallpaper}.sh
 chmod +x ~/.config/rofi/{clipboard.sh,emoji.sh,cliphist-rofi-img}
 ```
@@ -106,12 +110,43 @@ Defaults target dark mode: `.theme-dark` gets full surfaces, light mode keeps it
 and receives the accent. Exotic themes with higher-specificity self-mappings may keep a few
 keys — backgrounds, text and accent follow regardless.
 
+## Ghostty and Amfora
+
+Both ship the official Catppuccin Mocha palette; Ghostty is a static theme, Amfora an
+in-app one.
+
+**Ghostty** (`ghostty/config`) uses the built-in `Catppuccin Mocha` theme at
+`font-size = 12` with `window-padding-x/y = 8` and JetBrainsMono Nerd Font as the
+primary `font-family` (fontconfig handles any glyph the mono font lacks). The
+wallpaper palette include is intentionally *not* in the shipped config, so Ghostty
+no longer follows `SUPER + W` while rofi/waybar/hyprlock/borders/Obsidian still do.
+To go back to wallpaper-following colors: delete the `theme = ...` line and add
+
+```sh
+config-file = /home/ameen/.config/ghostty/palette.ghostty
+```
+
+(the generated file keeps regenerating either way). Terminal font/theme changes need
+a config reload (`CTRL + SHIFT + ,`) to apply.
+
+**Amfora** (`amfora/config.toml`, tested against `amfora 1.11.0`) is the actual full
+config: home `gemini://geminiprotocol.net` and search `gemini://geminispace.info/search`,
+HTTP(S) links open in the system default browser, an absolute-path download dir pointing
+at `/home/ameen/Downloads`, and explicit page-search keybindings: `/` opens the search
+bar and `n`/`N` jump between matches. Code-block highlighting uses `monokai` on purpose —
+this release's bundled chroma predates the `catppuccin-*` styles (an invalid style falls
+back to bland defaults rather than erroring, so it has to be chosen deliberately).
+Everything else stays at upstream defaults; bookmarks, subscriptions and certificates
+live in `~/.local/share/amfora` and are not part of this repo.
+
 ## Structure
 
 ```
+├── amfora/
+│   └── config.toml    # full Catppuccin Mocha amfora config (v1.11.0)
 ├── ghostty/
-│   ├── config         # palette include + reload keybind + no single-instance
-│   └── palette.ghostty# generated from wallpaper
+│   ├── config         # static Mocha theme + fonts + padding + reload keybind
+│   └── palette.ghostty# generated from wallpaper (currently not loaded by config)
 ├── hypr/            # hyprland.lua, module system, hyprlock.conf
 │   ├── modules/     # binds, autostart, decorations, env, input, ...
 │   ├── palette.sh   # wallpaper → color palette
@@ -135,7 +170,8 @@ keys — backgrounds, text and accent follow regardless.
   `hyprlock.conf` wholesale — don't hand-tune those two; edit `style.css` or the
   lines around the `# palette` markers instead
 - ghostty palette changes only apply to **new terminal windows** (ghostty reload
-  keeps existing cells drawn with old colors) — open a new window after re-theming
+  keeps existing cells drawn with old colors) — open a new window after re-theming;
+  the static Mocha theme is not affected by wallpaper shuffles in any case
 - `gtk-single-instance = false` is deliberate: with the default `detect`, new
   terminals launched from outside a terminal attach to the already-running
   ghostty process and inherit **its** launch-time config — stale singleton colors

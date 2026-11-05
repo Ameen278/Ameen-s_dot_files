@@ -1,3 +1,7 @@
 gtk-single-instance = false
-config-file = /home/ameen/.config/ghostty/palette.ghostty
+theme = Catppuccin Mocha
+font-family = JetBrainsMono Nerd Font
+font-size = 12
+window-padding-x = 8
+window-padding-y = 8
 keybind = ctrl+shift+comma=reload_config
