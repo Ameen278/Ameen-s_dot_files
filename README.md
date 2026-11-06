@@ -24,11 +24,9 @@ and a wallpaper-driven theming pipeline that re-colors the whole desktop with ev
     their next launch. Requires the KDE platform theme: `env.lua` exports
     `QT_QPA_PLATFORMTHEME=kde` (overrides the common `=gtk4` default, which makes
     Qt build its palette from GTK settings and ignore the scheme entirely)
-  - **Firefox chrome UI** — writes the palette block directly into the
-    auto-detected profile's `chrome/userChrome.css` (via `profiles.ini` marker
-    block) plus the stylesheet pref in `user.js`; theming applies at browser
-    launch. Note: `@import` inside `userChrome.css` silently dead-ends on this
-    setup — everything must live inline
+  - **Firefox chrome UI** — `chrome/userChrome-palette.css` written into the
+    auto-detected profile (via `profiles.ini`), imported through a thin
+    `userChrome.css` shim; theming applies at browser launch
 - **Wallpaper shuffle** — `hypr/wallpaper.sh` picks a random wallpaper from
   `~/Pictures/wallpapers` (`png/jpg/jpeg/webp`), never repeats the last one, and
   triggers the palette pipeline afterwards.
@@ -189,7 +187,7 @@ amfora() {
 │   ├── config         # static Mocha theme + fonts + padding + reload keybind
 │   └── palette.ghostty# generated from wallpaper (currently not loaded by config)
 ├── firefox/
-│   └── userChrome.css # generated chrome-UI block (installed into the auto-detected profile)
+│   └── userChrome-palette.css # generated chrome-UI layer (installed into the auto-detected profile)
 ├── hypr/            # hyprland.lua, module system, hyprlock.conf
 │   ├── modules/     # binds, autostart, decorations, env, input, ...
 │   ├── palette.sh   # wallpaper → color palette

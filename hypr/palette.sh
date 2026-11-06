@@ -467,29 +467,21 @@ if [ -n "$PREF_ROOT" ]; then
         mkdir -p "$FF_CHROME"
         cat > "$FF_CHROME/userChrome-palette.css" <<EOF
 /* Generated from the wallpaper by ~/.config/hypr/palette.sh — DO NOT EDIT */
-:root, body {
-    --lwt-accent-color:                   #$bg0 !important;
-    --lwt-text-color:                     #$fg0 !important;
-    --lwt-sidebar-background-color:       #$bg0 !important;
-    --sidebar-text-color:                 #$fg1 !important;
-}
-#navigator-toolbox, #navigator-toolbox *, #PersonalToolbar, #PersonalToolbar * {
-    --toolbar-bgcolor:                    #$bg0 !important;
-    --toolbar-color:                      #$fg0 !important;
-    --tab-selected-bgcolor:               #$bg1 !important;
-    --lwt-tab-line-color:                 #$accent !important;
-    --toolbarbutton-icon-fill:            #$fg1 !important;
-    --lwt-toolbar-field-background-color: #$bg1 !important;
-    --lwt-toolbar-field-color:            #$fg0 !important;
-    --lwt-toolbar-field-border-color:     #$bg3 !important;
-}
-#urlbar-background, #searchbar {
-    background-color:                     #$bg1 !important;
-    color:                                #$fg0 !important;
-}
-#sidebar-box, #sidebar {
-    background-color:                     #$bg0 !important;
-    color:                                #$fg1 !important;
+:root {
+    --lwt-accent-color:                   #$bg0;
+    --lwt-text-color:                     #$fg0;
+    --toolbar-bgcolor:                    #$bg0;
+    --toolbar-color:                      #$fg0;
+    --tab-selected-bgcolor:               #$bg1;
+    --lwt-tab-line-color:                 #$accent;
+    --lwt-toolbar-field-background-color: #$bg1;
+    --lwt-toolbar-field-color:            #$fg0;
+    --lwt-toolbar-field-border-color:     #$bg3;
+    --arrowpanel-background:              #$bg1;
+    --arrowpanel-color:                   #$fg0;
+    --arrowpanel-border-color:            #$bg3;
+    --lwt-sidebar-background-color:       #$bg0;
+    --sidebar-text-color:                 #$fg1;
 }
 EOF
         if ! grep -q 'userChrome-palette' "$FF_CHROME/userChrome.css" 2>/dev/null; then
