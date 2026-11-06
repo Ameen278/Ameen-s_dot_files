@@ -1,2 +1,26 @@
-/* thin stable shim — imports the generated layer */
-@import url("userChrome-palette.css");
+/* >>> wallpaper palette — managed by palette.sh — DO NOT EDIT */
+:root, body {
+    --lwt-accent-color:                   #131a1f !important;
+    --lwt-text-color:                     #e9eced !important;
+    --lwt-sidebar-background-color:       #131a1f !important;
+    --sidebar-text-color:                 #d5d8d9 !important;
+}
+#navigator-toolbox, #navigator-toolbox *, #PersonalToolbar, #PersonalToolbar * {
+    --toolbar-bgcolor:                    #131a1f !important;
+    --toolbar-color:                      #e9eced !important;
+    --tab-selected-bgcolor:               #1a2229 !important;
+    --lwt-tab-line-color:                 #2f8bce !important;
+    --toolbarbutton-icon-fill:            #d5d8d9 !important;
+    --lwt-toolbar-field-background-color: #1a2229 !important;
+    --lwt-toolbar-field-color:            #e9eced !important;
+    --lwt-toolbar-field-border-color:     #2b3a45 !important;
+}
+#urlbar-background, #searchbar {
+    background-color:                     #1a2229 !important;
+    color:                                #e9eced !important;
+}
+#sidebar-box, #sidebar {
+    background-color:                     #131a1f !important;
+    color:                                #d5d8d9 !important;
+}
+/* <<< wallpaper palette */
