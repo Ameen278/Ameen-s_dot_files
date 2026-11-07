@@ -19,6 +19,9 @@ hl.on("hyprland.start", function()
     -- Image watcher so screenshots / browser photos land in the history too
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
 
+    -- Flameshot daemon so SUPER+L capture opens instantly
+    hl.exec_cmd("command -v flameshot >/dev/null 2>&1 && { pgrep -x flameshot >/dev/null || flameshot; }")
+
     -- Wallpaper daemon (awww) + random pick; SUPER+w reuses the same script
     hl.exec_cmd(
         "command -v awww-daemon >/dev/null 2>&1 && { pgrep -x awww-daemon >/dev/null || awww-daemon; }"
