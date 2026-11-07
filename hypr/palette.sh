@@ -423,7 +423,7 @@ if [ -f "$KDG" ]; then
         SRC=$(cat "$HOME/.cache/kdeg-base-scheme" 2>/dev/null)
     else
         SRC="$CUR"
-        printf '%s\n' "$CUR" > "$HOME/.cache/kdeg-base-scheme"
+        [ -n "$SRC" ] && printf '%s\n' "$SRC" > "$HOME/.cache/kdeg-base-scheme"
     fi
     [ -z "$SRC" ] && SRC="ArtixDark"
     SCHEME_DIR="$HOME/.local/share/color-schemes"
@@ -447,6 +447,7 @@ if [ -f "$KDG" ]; then
             { print }
         ' "$BASE_SCHEME" > "${SCHEME_DIR}/AmeenPalette.colors"
         sed -i 's/^ColorScheme=.*/ColorScheme=AmeenPalette/' "$KDG"
+        grep -q '^ColorScheme=' "$KDG" || sed -i '/^\[General\]/a ColorScheme=AmeenPalette' "$KDG"
     fi
 fi
 
